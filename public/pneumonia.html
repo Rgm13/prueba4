@@ -1,0 +1,201 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Muertes por neumonia</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="appMuertes" class="container">
+        <!-- Formulario para añadir muertes -->
+        
+        <section class="form" >
+            <h1> MUERTES POR NEUMONIA</h1>
+            <br>
+                <form action="" class="text-center">
+                <div class="row">
+                <div class="col-md">
+                    <input v-model="country" @keyup.enter="crearMuerte" type="text"  name="country" placeholder="Pais" class="form-control" >
+                </div>
+                <div class="col-md">
+                    <input v-model="year" @keyup.enter="crearMuerte" type="number" name="year" placeholder="año" class="form-control">
+                </div>
+                <div class="col-md">
+                    <input v-model="ages_zero_fifty" @keyup.enter="crearMuerte" type="number" name="ages_zero_fifty" placeholder="0-50 años" class="form-control">
+                </div>
+                <div class="col-md">
+                    <input v-model="ages_fifty_seventy" @keyup.enter="crearMuerte" type="number" name="ages_fifty_seventy" placeholder="50-70 años" class="form-control">
+                </div>
+                <div class="col-md">
+                    <input v-model="ages_seventy" @keyup.enter="crearMuerte" type="number" name="ages_seventy" placeholder="70 años" class="form-control">
+                </div>
+                <div class="col-md">
+                    <input @click="crearMuerte" type="button" value="Añadir" class="btn btn-success">
+                </div>
+                </div>
+                </form>
+            
+           
+        </section>
+         
+        <!-- Tabla donde se muestran los datos -->
+        <section class="data">
+            <caption>Muertes</caption>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Pais</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Muertes 0-50 años</th>
+						<th scope="col">Muertes 50-70 años</th>
+						<th scope="col">Muertes 70 años</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(muerte, index) in muertes">
+                        
+                        <td>
+                            <span v-if="formActualizar && idActualizar == index">
+                                <!-- Formulario para actualizar -->
+                                <input v-model="countryActualizar" type="text" class="form-control">
+                            </span>
+                            <span v-else>
+                                <!-- Dato nombre -->
+                                {{ muerte.country }}
+                            </span>
+                        </td>
+                        <td>
+                            <span v-if="formActualizar && idActualizar == index">
+                                <!-- Formulario para actualizar -->
+                                <input v-model="yearActualizar" type="number" class="form-control">
+                            </span>
+                            <span v-else>
+                                <!-- Dato edad -->
+                                {{ muerte.year }}
+                            </span>
+                        </td>
+						<td>
+                            <span v-if="formActualizar && idActualizar == index">
+                                <!-- Formulario para actualizar -->
+                                <input v-model="ageszerofiftyActualizar" type="number" class="form-control">
+                            </span>
+                            <span v-else>
+                                <!-- Dato edad -->
+                                {{ muerte.ages_zero_fifty }}
+                            </span>
+                        </td>
+						<td>
+                            <span v-if="formActualizar && idActualizar == index">
+                                <!-- Formulario para actualizar -->
+                                <input v-model="agesfiftyseventyActualizar" type="number" class="form-control">
+                            </span>
+                            <span v-else>
+                                <!-- Dato edad -->
+                                {{ muerte.ages_fifty_seventy }}
+                            </span>
+                        </td>
+						<td>
+                            <span v-if="formActualizar && idActualizar == index">
+                                <!-- Formulario para actualizar -->
+                                <input v-model="agesseventyActualizar" type="number" class="form-control">
+                            </span>
+                            <span v-else>
+                                <!-- Dato edad -->
+                                {{ muerte.ages_seventy }}
+                            </span>
+                        </td>
+                        <td>
+                            <!-- Botón para guardar la información actualizada -->
+                            <span v-if="formActualizar && idActualizar == index">
+                                <button @click="guardarActualizacion(index)" class="btn btn-success">Guardar</button>
+                            </span>
+                            <span v-else>
+                                <!-- Botón para mostrar el formulario de actualizar -->
+                                <button @click="verFormActualizar(index)" class="btn btn-warning">Actualizar</button>
+                                <!-- Botón para borrar -->
+                                <button @click="borrarMuerte(index)" class="btn btn-danger">Borrar</button>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new Vue({
+                el: '#appMuertes',
+                data: {
+                    // Input nombre
+                    country: '',
+                    // Input edad
+                    year: '',
+                    ages_zero_fifty:'',
+                    ages_fifty_seventy:'',
+                    ages_seventy:'',
+                    // Ver o no ver el formulario de actualizar
+                    formActualizar: false,
+                    // La posición de tu lista donde te gustaría actualizar 
+                    idActualizar: -1,
+                    // Input nombre dentro del formulario de actualizar
+                    countryActualizar: '',
+                    // Input edad dentro del formulario de actualizar
+                    yearActualizar: '',
+					ageszerofiftyActualizar:'',
+					agesfiftyseventyActualizar:'',
+					agesseventyActualizar:'',
+                    // Lista de pacientes
+                    muertes: [] 
+                },
+                methods: {
+                    crearMuerte: function () {
+                        // Anyadimos a nuestra lista
+                        this.muertes.push({
+                            id:+new Date(),
+                            country: this.country,
+                            year: this.year,
+                            ages_zero_fifty: this.ages_fifty_seventy,
+							ages_fifty_seventy: this.ages_fifty_seventy,
+							ages_seventy: this.ages_seventy
+                        });
+                        // Vaciamos el formulario de añadir
+                        this.country = '';
+                        this.year = '';
+						this.ages_zero_fifty = '';
+						this.ages_fifty_seventy = '';
+						this.ages_seventy = '';
+                    },
+                    verFormActualizar: function (muerte_id) {
+                        // Antes de mostrar el formulario de actualizar, rellenamos sus campos
+                        //this.idActualizar = paciente_id;
+                        this.idActualizar=muerte_id;
+                        this.countryActualizar = this.muertes[muerte_id].country;
+						this.yearActualizar= this.muertes[muerte_id].year;
+						this.ageszerofiftyActualizar=this.muertes[muerte_id].ages_zero_fifty;
+						this.agesfiftyseventyActualizar=this.muertes[muerte_id].ages_fifty_seventy;
+						this.agesseventyActualizar=this.muertes[muerte_id].ages_seventy;
+                        // Mostramos el formulario
+                        this.formActualizar = true;
+                    },
+                    borrarMuerte: function (muerte_id) {
+                        // Borramos de la lista
+                        this.muertes.splice(muerte_id, 1);
+                    },
+                    guardarActualizacion: function (muerte_country) {
+                        // Ocultamos nuestro formulario de actualizar
+                        this.formActualizar = false;
+                        // Actualizamos los datos
+                        this.muertes[muerte_country].year = this.yearActualizar;
+						this.muertes[muerte_country].ages_zero_fifty= this.ageszerofiftyActualizar;
+						this.muertes[muerte_country].ages_fifty_seventy=this.agesfiftyseventyActualizar;
+						this.muertes[muerte_country].ages_seventy=this.agesseventyActualizar;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
