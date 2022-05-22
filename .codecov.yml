@@ -1,0 +1,38 @@
+codecov:
+  require_ci_to_pass: yes
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+status:
+    project: yes
+    patch: yes
+    changes: no
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+comment:
+  layout: "reach,diff,flags,tree"
+  behavior: default
+  require_changes: no
+
+  version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.2
+
+  Run-With-Node:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - run:
+          name: install and run tests
+          command: |
+            yarn install && yarn test
+      - codecov/upload:
+          file: './coverage/clover.xml'
+          token: a7a5df63-codcov-token-4278vh38
