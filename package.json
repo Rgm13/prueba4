@@ -35,9 +35,11 @@
     "cors": "^2.8.5",
     "d3": "^7.4.4",
     "express": "^4.17.3",
+    "geojson": "^0.5.0",
     "nedb": "^1.8.0",
     "request": "^2.88.2",
     "save": "^2.5.0",
+    "socket.io": "^4.5.1",
     "svelte-spa-router": "^3.2.0",
     "sveltestrap": "^5.9.0"
   },
