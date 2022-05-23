@@ -1,3 +1,5 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/gti-sos/SOS2122-24/badge.svg)](https://snyk.io/test/github/gti-sos/SOS2122-24)
+[![Coverage Status](https://coveralls.io/repos/github/gti-sos/SOS2122-24/badge.svg)](https://coveralls.io/github/gti-sos/SOS2122-24)
 # SOS2122-24
 
 - **Team**
